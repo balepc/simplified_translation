@@ -1,0 +1,64 @@
+SimplifiedTranslation
+================
+
+Simplified Translation is a plugin for translating ActiveRecord models. This model
+fits more for application with base language (which is mostly used) and some other
+languages. All translations are sotred in separate table. Eg.
+
+products -> product_trl
+
+product_trl
+  language_id
+  record_id
+  tranlsation_column1
+  tranlsation_column1
+  ...
+
+For now SimplifiedTranslation works with Globalite plugin, but it could be easily extended
+by adding new LocaleAdapter.
+
+SimplifiedTranslation adds some new methods to existing model. Eg we have a product model
+with column 'name' and have base site language 'english' and two others 'Russian' and 'Latvian'
+So we have:
+
+name
+name=()
+name_en
+name_en=()
+name_lv
+name_lv=()
+name_ru
+name_ru=()
+
+Example
+=======
+
+The way this plugin works. 
+
+1. Specify columns you need to translate
+
+class Product << ActiveRecord::Base
+   translates :name, :desciption
+end
+
+2. Create migration for translations storing
+
+$ script/generate model_translation Product
+$ rake db:migrate
+
+That is actually it.
+
+$ script/console
+>> product = Product.find(:first)
+>> product.name_ru = "продукт"
+ => "продукт"
+>> product.name
+ => "product"
+>> Locale.set_code(:"ru-RU")
+ => :RU
+>> product.name
+ => "продукт"
+
+
+
+Copyright (c) 2008 Valery Vishnyakov, released under the MIT license

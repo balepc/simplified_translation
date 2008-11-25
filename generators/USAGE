@@ -1,0 +1,3 @@
+To generate model translation table use:
+
+> script/generate model_translation ModelName
